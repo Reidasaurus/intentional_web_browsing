@@ -34,12 +34,10 @@ function restoreOptions() {
   let syncStorageItem = browser.storage.sync.get();
   syncStorageItem.then((res) => {
     console.log(res);
-    let reminderSitesString = res.reminderSiteStrings.join("\n");
-    let blockedSitesString = res.blockedSiteStrings.join("\n");
     reminderMessageNode.value = res.reminderMessage || "Are you sure you want to proceed to this site?";
     blockMessageNode.value = res.blockMessage || "This website is blocked";
-    if (reminderSitesString) reminderSitesArea.value = reminderSitesString;
-    if (blockedSitesString) blockedSitesArea.value = blockedSitesString;
+    if (res.reminderSiteStrings) reminderSitesArea.value = res.reminderSiteStrings.join("\n");
+    if (res.blockedSiteStrings) blockedSitesArea.value = res.blockedSiteStrings("\n");
   });
 }
 

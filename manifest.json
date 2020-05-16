@@ -4,7 +4,14 @@
   },
 
   "browser_action": {
-      "default_title": "Your Web Reminders options"
+      "default_title": "Intentional Web Browsing options"
+  },
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "intentional_web_browsing@mozilla.org",
+      "strict_min_version": "57.0a1"
+    }
   },
 
   "content_scripts": [
@@ -15,9 +22,9 @@
   ],
 
   "description": "A simple, customizable web page blocker.",
-  "homepage_url": "https://github.com/Reidasaurus/your_web_reminders",
+  "homepage_url": "https://github.com/Reidasaurus/intentional_web_browsing",
   "manifest_version": 2,
-  "name": "Your Web Reminders",
+  "name": "Intentional Web Browsing",
   "options_ui": {
       "page": "options.html",
       "browser_style": true
