@@ -10,6 +10,7 @@
 	syncStoredItems.then((res) => {
 		let hrefString = "<h1>Current url: " + currentURL + "<h1>"
 		blockSite(res.blockMessage);
+		
 		// res.reminderSiteStrings.forEach((val) => {
 		// 	let h1String = "<h1>" + val + "</h1>";
 		// 	document.body.innerHTML += h1String;
@@ -19,12 +20,12 @@
 	function 	blockSite(message) {
 		let parentDiv = document.createElement("DIV");
 		parentDiv.classList.add("parentDiv")
-		let messageH1 = document.createElement("H1");
+		let messageP = document.createElement("P");
 		let messageText = document.createTextNode(message);
-		messageH1.appendChild(messageText);
-		parentDiv.appendChild(messageH1);
+		messageP.appendChild(messageText);
+		parentDiv.appendChild(messageP);
 		document.body.innerHTML = ""
-		document.body.append(styles);
+		document.body.appendChild(styles);
 		document.body.appendChild(parentDiv);
 	}
 
