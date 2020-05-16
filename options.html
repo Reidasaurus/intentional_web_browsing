@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+
+<body>
+  <form id="options-form">
+      <p>
+        <label for="reminder-message">Reminder message:</label>
+        <input type="text" id="reminder-message">  
+      </p>
+      <p>
+        <label for="block-message">Blocked site message:</label>
+        <input type="text" id="block-message">  
+      </p>
+      <textarea name="reminderSites" id="reminderSitesArea" cols="30" rows="10" placeholder="SiteIWantToPauseAt.com"></textarea>
+      <p>Sites to be reminded before entry</p>
+      <textarea name="blockSites" id="blockedSitesArea" cols="30" rows="10" placeholder="SiteIWantToBlock.com"></textarea>
+      <p>Sites to block</p>
+      <button type="submit">Save</button>
+  </form>
+  <script src="options.js"></script>
+</body>
+
+</html>
