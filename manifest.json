@@ -4,14 +4,7 @@
   },
 
   "browser_action": {
-      "default_title": "Web reminder options"
-  },
-
-  "browser_specific_settings": {
-      "gecko": {
-          "id": "your-web-reminders@mozilla.org",
-          "strict_min_version": "57.0a1"
-      }
+      "default_title": "Your Web Reminders options"
   },
 
   "content_scripts": [
@@ -21,7 +14,7 @@
     }
   ],
 
-  "description": "A simple, customizable web page blocker",
+  "description": "A simple, customizable web page blocker.",
   "homepage_url": "https://github.com/Reidasaurus/your_web_reminders",
   "manifest_version": 2,
   "name": "Your Web Reminders",
@@ -35,6 +28,6 @@
     "activeTab"
   ],
   
-  "version": "1.1"
+  "version": "1.0"
   
 }
