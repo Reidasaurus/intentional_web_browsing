@@ -37,7 +37,7 @@ function restoreOptions() {
     reminderMessageNode.value = res.reminderMessage || "Are you sure you want to proceed to this site?";
     blockMessageNode.value = res.blockMessage || "This website is blocked";
     if (res.reminderSiteStrings) reminderSitesArea.value = res.reminderSiteStrings.join("\n");
-    if (res.blockedSiteStrings) blockedSitesArea.value = res.blockedSiteStrings("\n");
+    if (res.blockedSiteStrings) blockedSitesArea.value = res.blockedSiteStrings.join("\n");
   });
 }
 
