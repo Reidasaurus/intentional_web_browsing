@@ -8,20 +8,26 @@
 <body>
   <h1>Intentional Web Browsing options</h1>
   <form id="options-form">
-      <p>
-        <label for="reminder-message">Reminder message:</label>
-        <input type="text" id="reminder-message">  
-      </p>
-      <p>
-        <label for="block-message">Blocked site message:</label>
-        <input type="text" id="block-message">  
-      </p>
-      <textarea name="reminderSites" id="reminderSitesArea" cols="30" rows="10" placeholder="SiteIWantToPauseAt.com
-      AnotherSiteIWantToPauseAt.com"></textarea>
-      <p>Sites to be reminded before entry</p>
-      <textarea name="blockSites" id="blockedSitesArea" cols="30" rows="10" placeholder="SiteIWantToBlock.com
-      AnotherSiteIWantToBlock.com"></textarea>
-      <p>Sites to block</p>
+    <div id="psets">
+      
+      <div class="parameter-set">
+
+        <label for="checktype 1">Checktype:</label>
+        <select name="checktype 1" class="parameter-checktype">
+          <option value="remind">Remind</option>
+          <option value="block">Block</option>
+        </select>
+
+        <label for="URL to check 1">URL to check:</label>
+        <input name="URL to check 1" type="text" class="parameter-url">
+
+        <label for="message to display">Display message:</label>
+        <input name="message to display" type="text" class="parameter-message">
+
+      </div>
+    
+    </div>
+      <button id="add-pset">+</button>
       <button type="submit">Save</button>
   </form>
   <script src="options.js"></script>
