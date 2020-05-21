@@ -9,6 +9,7 @@
 
   "browser_specific_settings": {
     "gecko": {
+      "id": "intentional-web-browsing@mozilla.org",
       "strict_min_version": "57.0a1"
     }
   },

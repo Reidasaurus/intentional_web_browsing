@@ -11,6 +11,59 @@ class ParameterSet {
   }
 }
 
+function newFormLabel(forProperty, value, index) {
+  let forString = forProperty + "-" + index.toString();
+  let labelElement = document.createElement("LABEL");
+  labelElement.htmlFor = forString;
+  labelElement.innerText = value;
+
+  return labelElement;
+}
+
+function newFormSelect(selectedOption, index) {
+  let selectElement = document.createElement("SELECT");
+  selectElement.classList.add("parameter-checktype");
+  let idString = "checktype-" + index.toString();
+  selectElement.id = idString;
+  let remindOption = document.createElement("OPTION");
+  remindOption.value = "remind";
+  remindOption.innerText = "Remind";
+  if (selectedOption == "remind") remindOption.selected = true;
+  let blockOption = document.createElement("OPTION");
+  blockOption.value = "block";
+  blockOption.innerText = "Block";
+  if (selectedOption == "block") blockOption.selected = true;
+  selectElement.appendChild(remindOption);
+  selectElement.appendChild(blockOption);
+
+  return selectElement;
+}
+
+function newFormText(elemClass, elemIdWOIndex, value, index) {
+  let inputElement = document.createElement("INPUT");
+  inputElement.setAttribute("type", "text");
+  inputElement.classList.add(elemClass);
+  let idString = elemIdWOIndex + "-" + index.toString();
+  inputElement.id = idString;
+  inputElement.value = value;
+
+  return inputElement;
+}
+
+function newParameterSetDiv(parameterObject, index) {
+  let containerElement = document.createElement("DIV");
+  containerElement.classList.add("parameter-set");
+  containerElement.appendChild(newFormLabel("checktype", "Checktype:", index));
+  containerElement.appendChild(newFormSelect(parameterObject.checktype, index));
+  containerElement.appendChild(newFormLabel("URL-to-check", "URL to check:", index));
+  containerElement.appendChild(newFormText("parameter-url", "URL-to-check", parameterObject.url, index));
+  containerElement.appendChild(newFormLabel("message-to-display", "Display message:", index));
+  containerElement.appendChild(newFormText("parameter-message", "message-to-display", parameterObject.message, index));
+
+  return containerElement;
+}
+
+
 function addNewParameterSetOption(e) {
   pSetsDiv = document.getElementById("psets");
   pSetsAry = pSetsDiv.getElementsByClassName("parameter-set");
@@ -24,7 +77,6 @@ function addNewParameterSetOption(e) {
 function saveOptions(e) {
   let userParameterSetList = [];
   let parameterSets = document.querySelectorAll("div.parameter-set");
-  console.log(userParameterSetList);
   parameterSets.forEach((pset) => {
     let checktype = pset.getElementsByClassName("parameter-checktype")[0].value;
     let url = pset.getElementsByClassName("parameter-url")[0].value;
@@ -32,43 +84,42 @@ function saveOptions(e) {
     let newParameterSet = new ParameterSet(checktype, url, message);
     userParameterSetList.push(newParameterSet);
   });
-  console.log(userParameterSetList);
-  // reminderMessageInput = reminderMessageNode.value;
-  // console.log("Reminder message:" + reminderMessageInput);
-  // blockMessageInput = blockMessageNode.value;
-  // console.log("Block message:" + blockMessageInput);
-  // reminderSitesInput = reminderSitesArea.value;
-  // blockedSitesInput = blockedSitesArea.value;
 
-  // reminderSitesArray = reminderSitesInput.split("\n");
-  // console.log("Reminder sites array:" + reminderSitesArray);
-  // blockedSitesArray = blockedSitesInput.split("\n");
-  // console.log("Blocked sites array:" + blockedSitesArray);
-
-  // let storageEvent = browser.storage.sync.set({
-  //   reminderMessage: reminderMessageInput,
-  //   blockMessage: blockMessageInput,
-  //   reminderSiteStrings: reminderSitesArray,
-  //   blockedSiteStrings: blockedSitesArray
-  // });
-  // storageEvent.then((res) => {
-  //   restoreOptions();
-  // });
-  // restoreOptions();
+  let storageEvent = browser.storage.sync.set({
+    userParameterSets: userParameterSetList
+  });
+  storageEvent.then((res) => {
+    console.log(res);
+    displayFlashMessage("Preferences saved :)");
+  });
   e.preventDefault();
 }
 
-// function restoreOptions() {
-//   let syncStorageItem = browser.storage.sync.get();
-//   syncStorageItem.then((res) => {
-//     console.log(res);
+function restoreOptions() {
+  let syncStorageItem = browser.storage.sync.get();
+  syncStorageItem.then((res) => {
+    if (res.userParameterSets && res.userParameterSets.length > 0) {
+      let pSetsDiv = document.getElementById("psets");
+      while (pSetsDiv.firstChild) {
+        pSetsDiv.removeChild(pSetsDiv.firstChild);
+      }
+      res.userParameterSets.forEach((elem, index) => {
+        let paramDiv = newParameterSetDiv(elem, index);
+        pSetsDiv.appendChild(paramDiv);
+      });
+    }
 //     reminderMessageNode.value = res.reminderMessage || "Are you sure you want to proceed to this site?";
 //     blockMessageNode.value = res.blockMessage || "This website is blocked";
 //     if (res.reminderSiteStrings) reminderSitesArea.value = res.reminderSiteStrings.join("\n");
 //     if (res.blockedSiteStrings) blockedSitesArea.value = res.blockedSiteStrings.join("\n");
-//   });
-// }
+  });
+}
 
-// document.addEventListener('DOMContentLoaded', restoreOptions);
-document.querySelector("#options-form").addEventListener("submit", saveOptions);
+function displayFlashMessage(message) {
+  let flashMessageNode = document.getElementById("flash-message");
+  flashMessageNode.innerText = message;
+}
+
+document.addEventListener('DOMContentLoaded', restoreOptions);
+document.getElementById("options-form").addEventListener("submit", saveOptions);
 document.getElementById("add-pset").addEventListener("click", addNewParameterSetOption);
