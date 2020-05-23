@@ -16,25 +16,32 @@ function newFormLabel(forProperty, value, index) {
 }
 
 function newFormSelect(selectedOption, index) {
+  let containerDiv = document.createElement("DIV");
+  containerDiv.classList.add("select-div", "parameter-div");
+
   let selectElement = document.createElement("SELECT");
   selectElement.classList.add("parameter-checktype");
   let idString = "checktype-" + index.toString();
   selectElement.id = idString;
   let remindOption = document.createElement("OPTION");
   remindOption.value = "remind";
-  remindOption.innerText = "Remind";
+  remindOption.innerText = "remind before entering";
   if (selectedOption == "remind") remindOption.selected = true;
   let blockOption = document.createElement("OPTION");
   blockOption.value = "block";
-  blockOption.innerText = "Block";
+  blockOption.innerText = "block";
   if (selectedOption == "block") blockOption.selected = true;
   selectElement.appendChild(remindOption);
   selectElement.appendChild(blockOption);
 
-  return selectElement;
+  containerDiv.innerText = "what website would you like to ";
+  containerDiv.appendChild(selectElement);
+  containerDiv.innerHTML += "?";
+
+  return containerDiv;
 }
 
-function newFormText(elemClass, elemIdWOIndex, value, index) {
+function newFormText(elemClass, elemIdWOIndex, value, index, divClass) {
   let inputElement = document.createElement("INPUT");
   inputElement.setAttribute("type", "text");
   inputElement.classList.add(elemClass);
@@ -46,16 +53,24 @@ function newFormText(elemClass, elemIdWOIndex, value, index) {
 }
 
 function newParameterSetDiv(parameterObject, index) {
-  let containerElement = document.createElement("DIV");
-  containerElement.classList.add("parameter-set");
-  containerElement.appendChild(newFormLabel("checktype", "Checktype:", index));
-  containerElement.appendChild(newFormSelect(parameterObject.checktype, index));
-  containerElement.appendChild(newFormLabel("URL-to-check", "URL to check:", index));
-  containerElement.appendChild(newFormText("parameter-url", "URL-to-check", parameterObject.url, index));
-  containerElement.appendChild(newFormLabel("message-to-display", "Display message:", index));
-  containerElement.appendChild(newFormText("parameter-message", "message-to-display", parameterObject.message, index));
+  let containerDiv = document.createElement("DIV");
+  containerDiv.classList.add("parameter-set");
+  
+  containerDiv.appendChild(newFormSelect(parameterObject.checktype, index));
+  
+  let urlDiv = document.createElement("DIV");
+  urlDiv.classList.add("url-div", "parameter-div");
+  urlDiv.appendChild(newFormLabel("URL-to-check", "url:", index));
+  urlDiv.appendChild(newFormText("parameter-url", "URL-to-check", parameterObject.url, index));
+  containerDiv.appendChild(urlDiv);
 
-  return containerElement;
+  let messageDiv = document.createElement("DIV");
+  messageDiv.classList.add("message-div", "parameter-div");
+  messageDiv.appendChild(newFormLabel("message-to-display", "message:", index));
+  messageDiv.appendChild(newFormText("parameter-message", "message-to-display", parameterObject.message, index));
+  containerDiv.appendChild(messageDiv);
+
+  return containerDiv;
 }
 
 
