@@ -1,8 +1,3 @@
-// let reminderMessageNode = document.getElementById("reminder-message");
-// let blockMessageNode = document.getElementById("block-message");
-// let reminderSitesArea = document.getElementById("reminderSitesArea");
-// let blockedSitesArea = document.getElementById("blockedSitesArea"); 
-
 class ParameterSet {
   constructor(checktype, url, message) {
     this.checktype = checktype;
@@ -70,7 +65,6 @@ function addNewParameterSetOption(e) {
   lastPSet = pSetsAry[pSetsAry.length - 1];
   clonedPSet = lastPSet.cloneNode(true);
   pSetsDiv.appendChild(clonedPSet);
-  console.log(lastPSet);
   e.preventDefault();
 }
 
@@ -89,9 +83,9 @@ function saveOptions(e) {
     userParameterSets: userParameterSetList
   });
   storageEvent.then((res) => {
-    console.log(res);
     displayFlashMessage("Preferences saved :)");
   });
+  console.log("Saved");
   e.preventDefault();
 }
 
@@ -108,10 +102,6 @@ function restoreOptions() {
         pSetsDiv.appendChild(paramDiv);
       });
     }
-//     reminderMessageNode.value = res.reminderMessage || "Are you sure you want to proceed to this site?";
-//     blockMessageNode.value = res.blockMessage || "This website is blocked";
-//     if (res.reminderSiteStrings) reminderSitesArea.value = res.reminderSiteStrings.join("\n");
-//     if (res.blockedSiteStrings) blockedSitesArea.value = res.blockedSiteStrings.join("\n");
   });
 }
 

@@ -1,7 +1,7 @@
 (function() {
 
+	// Get current url to check against user-set urls to be interrupted
 	let currentURL = window.location.href;
-	let syncStoredItems = browser.storage.sync.get();
 
 	// Set styles to inject to center blocked site message
 	let styles = document.createElement('style');
@@ -12,30 +12,38 @@
 
 	// On successful storage retrieval, check if url matches any in user specified arrays
 	// and take according action	
+	let syncStoredItems = browser.storage.sync.get();
 	syncStoredItems.then((res) => {
-		// Blocked site check
-		if (res.blockedSiteStrings.some(matchURL)) {
-			blockSite(res.blockMessage);
-		} 
-		// Reminder site check
-		else if (res.reminderSiteStrings.some(matchURL)) {
-			alert(res.reminderMessage);
+		let matchedParameterSet = res.userParameterSets.find(obj => matchesURL(obj.url));
+		if (matchedParameterSet) {
+			switch (matchedParameterSet.checktype) {
+			case "block":
+				blockSite(matchedParameterSet.message);
+				break;
+			case "remind": 
+				console.log("This website should show a reminder thing");
+				let reminderMessage = matchedParameterSet.message + "\n\nWould you like to proceed?";
+				if (!confirm(reminderMessage)) {
+					let blockMessage = "You chose to block this website after being reminded:<br><br>" + matchedParameterSet.message;
+					blockSite(blockMessage);
+				}
+				break;
+			}
 		}
 	});
 
 	// Create regex and check for match against currentURL
-	function matchURL(matchString) {
-		let matchRegEx = new RegExp(matchString);
-		return matchRegEx.test(currentURL);
+	function matchesURL(matchString) {
+		let matchRegEx = new RegExp(matchString.toLowerCase());
+		return matchRegEx.test(currentURL.toLowerCase());
 	}
 
 	// Clear the document body and add a vertical and horizontally centered block message
-	function 	blockSite(message) {
+	function 	blockSite(messageHTML) {
 		let parentDiv = document.createElement("DIV");
 		parentDiv.classList.add("parentDiv")
 		let messageP = document.createElement("P");
-		let messageText = document.createTextNode(message);
-		messageP.appendChild(messageText);
+		messageP.innerHTML = (messageHTML);
 		parentDiv.appendChild(messageP);
 		document.body.innerHTML = ""
 		document.body.appendChild(styles);
