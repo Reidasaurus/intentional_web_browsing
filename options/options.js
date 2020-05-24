@@ -52,6 +52,15 @@ function newFormText(elemClass, elemIdWOIndex, value, index, divClass) {
   return inputElement;
 }
 
+function newParameterSetRemoveButton() {
+  let buttonElement = document.createElement("BUTTON");
+  buttonElement.innerText = "Remove";
+  buttonElement.classList.add("remove-parameter-set");
+  buttonElement.addEventListener("click", removeParameterSet);
+
+  return buttonElement;
+}
+
 function newParameterSetDiv(parameterObject, index) {
   let containerDiv = document.createElement("DIV");
   containerDiv.classList.add("parameter-set");
@@ -70,9 +79,10 @@ function newParameterSetDiv(parameterObject, index) {
   messageDiv.appendChild(newFormText("parameter-message", "message-to-display", parameterObject.message, index));
   containerDiv.appendChild(messageDiv);
 
+  containerDiv.appendChild(newParameterSetRemoveButton());
+
   return containerDiv;
 }
-
 
 function addNewParameterSetOption(e) {
   pSetsDiv = document.getElementById("psets");
@@ -80,6 +90,17 @@ function addNewParameterSetOption(e) {
   lastPSet = pSetsAry[pSetsAry.length - 1];
   clonedPSet = lastPSet.cloneNode(true);
   pSetsDiv.appendChild(clonedPSet);
+  e.preventDefault();
+}
+
+function removeParameterSet(e) {
+  console.log("e is:");
+  console.log(e);
+  console.log("this is:");
+  console.log(this);
+  console.log("parent is:");
+  console.log(this.parentElement);
+  this.parentElement.remove();
   e.preventDefault();
 }
 
