@@ -85,22 +85,21 @@ function newParameterSetDiv(parameterObject, index) {
 }
 
 function addNewParameterSetOption(e) {
-  pSetsDiv = document.getElementById("psets");
-  pSetsAry = pSetsDiv.getElementsByClassName("parameter-set");
-  lastPSet = pSetsAry[pSetsAry.length - 1];
-  clonedPSet = lastPSet.cloneNode(true);
-  pSetsDiv.appendChild(clonedPSet);
+  let pSetsDiv = document.getElementById("psets");
+  let pSetsAry = pSetsDiv.getElementsByClassName("parameter-set");
+  let newIndex = pSetsAry.length;
+  pSetsDiv.appendChild(newParameterSetDiv({checktype: "remind", url: "", message: ""}, newIndex));
   e.preventDefault();
 }
 
 function removeParameterSet(e) {
-  console.log("e is:");
   console.log(e);
-  console.log("this is:");
-  console.log(this);
-  console.log("parent is:");
-  console.log(this.parentElement);
+  let pSetsDiv = document.getElementById("psets");
+  let pSetsAry = pSetsDiv.getElementsByClassName("parameter-set");
   this.parentElement.remove();
+  if (pSetsAry.length == 0) {
+    pSetsDiv.appendChild(newParameterSetDiv({checktype: "remind", url:"", message:""}, 0));
+  }
   e.preventDefault();
 }
 
@@ -121,15 +120,14 @@ function saveOptions(e) {
   storageEvent.then((res) => {
     displayFlashMessage("Preferences saved :)");
   });
-  console.log("Saved");
   e.preventDefault();
 }
 
 function restoreOptions() {
   let syncStorageItem = browser.storage.sync.get();
   syncStorageItem.then((res) => {
+    let pSetsDiv = document.getElementById("psets");
     if (res.userParameterSets && res.userParameterSets.length > 0) {
-      let pSetsDiv = document.getElementById("psets");
       while (pSetsDiv.firstChild) {
         pSetsDiv.removeChild(pSetsDiv.firstChild);
       }
@@ -137,6 +135,8 @@ function restoreOptions() {
         let paramDiv = newParameterSetDiv(elem, index);
         pSetsDiv.appendChild(paramDiv);
       });
+    } else {
+      pSetsDiv.appendChild(newParameterSetDiv({checktype: "remind", url:"", message:""}, 0));
     }
   });
 }
